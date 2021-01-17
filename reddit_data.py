@@ -11,7 +11,7 @@ reddit = praw.Reddit(
     client_secret=client_secret,
     user_agent="review finder"
 )
-api = PushshiftAPI(reddit)
+api = PushshiftAPI()
 
 def get_from_reddit(item):
 
@@ -19,7 +19,7 @@ def get_from_reddit(item):
     reddit_posts = reddit.subreddit("all").search(
         item, 
         sort="best", 
-        time_filter="week", 
+        time_filter="month", 
         limit = 10,
     )
 
@@ -39,27 +39,46 @@ def searchAPI(start_epoch, end_epoch, item):
                     q = item,
                     sort = "desc",
                     sort_type = "score",
-                    limit=15,
                     title=item,
-                    over_18="false"
+                    over_18="false",
+                    limit=200
                     )
     print("bruh1")
-    cur = 0
+    cur1 = 0
+    cur2 = 0
+    avgVotes = 0
+    count = 0
+
+    temp = []
+
     for item in gen:
-        print(item.permalink)
-        sent = TextBlob(item.title).sentiment
-        cur+=sent.polarity
-        print(sent)
-    return cur
+        avgVotes += item.score
+        count+=1
+        temp.append((item.score,item.title))
+    avgVotes = avgVotes/count
+    print("average", avgVotes)
+    
+    for item in temp:
+        #print(item.permalink)
+        #print(item[1])
+        sent = TextBlob(item[1]).sentiment
+        #print(item[0]/avgVotes)
+        if(sent.polarity > 0):
+            cur1 += sent.polarity 
+        else:
+            cur2 += sent.polarity 
+        
+        #print(sent)
+    return (cur1, cur2)
 
 
 def get_graph_data(item):
-    results = [[0 for x in range(2)] for y in range(15)] 
+    #results = [[0 for x in range(2)] for y in range(15)] 
+    results = [1 for i in range(15)]
     start_epoch=int(dt.datetime(2020, 1, 1).timestamp())
-    for i in range(1, 13):
-        results[i][0] = 0
-    for i in range(9, 14):
-        api = PushshiftAPI(reddit)
+    for i in range(1, 14):
+        results[i] = (0, 0)
+    for i in range(1, 14):
         print(i)
 
         if i == 12:
@@ -72,9 +91,10 @@ def get_graph_data(item):
             start_epoch=int(dt.datetime(2020, i, 1).timestamp())
             end_epoch=int(dt.datetime(2020, i+1, 1).timestamp())
         
-        results[i][0] = searchAPI(start_epoch, end_epoch, item)
-        print("results: ", results[i][0])
-        
+        results[i-1] = searchAPI(start_epoch, end_epoch, item)
+        print("results: ", results[i-1][0], " ", results[i-1][1])
+    
+    
 
 
 

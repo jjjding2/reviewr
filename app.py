@@ -14,9 +14,8 @@ def success():
         query = request.form['query'].lower()
         data = get_from_reddit(query)
         graphdata = get_graph_data(query)
-        return render_template("index.html", data=data)
         if data:
-            return render_template("index.html", data=data)
+            return render_template("index.html", data=data, ca=graphdata)
     
     return render_template("index.html")
         
