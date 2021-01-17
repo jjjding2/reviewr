@@ -1,10 +1,11 @@
 # reviewr
 
-Building holistic brand profiles from online discussions
+Discovering trends from online reviews
 
-You'll need a Reddit API key, which can replace the placeholders in config.py.
+You'll need a Reddit API key, which can replace the placeholders in config.py. See here: 
+https://praw.readthedocs.io/en/latest/getting_started/authentication.html
 
-Once you have your virtual environment, you'll need
+Once you have your virtual environment, install dependencies
 ```
 pip install flask
 pip install praw
