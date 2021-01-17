@@ -34,6 +34,7 @@ def get_from_reddit(item):
         #print(item.permalink)
     return results
 
+#deprecated function that makes search queries for every time frame – migrated to one query and sorting to reduce query time
 def searchAPI(start_epoch, end_epoch, item):
     gen =api.search_submissions(before=end_epoch,
                     after=start_epoch,
@@ -67,7 +68,7 @@ def searchAPI(start_epoch, end_epoch, item):
 
     return (cur1, cur2)
 
-
+#retrieves reddit posts and determines polarity – returns an array with data for each month
 def get_graph_data(item):
     #results = [[0 for x in range(2)] for y in range(15)] 
     start_epoch=int(dt.datetime(2020, 1, 1).timestamp())
@@ -138,8 +139,8 @@ def get_graph_data(item):
     print(cnt)
         
     
-    
-    
+#    for i in range(1, 14):
+#        print(results[i-1])
     
     
 

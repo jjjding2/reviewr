@@ -9,3 +9,14 @@ client_secret = os.environ.get("REDDIT_CSECRET")
 # App Settings
 SECRET_KEY = secrets.token_hex(16)
 WTF_CSRF_ENABLED = False
+
+
+
+
+
+
+
+
+
+
+
