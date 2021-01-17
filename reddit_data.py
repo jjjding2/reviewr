@@ -54,6 +54,8 @@ def searchAPI(start_epoch, end_epoch, item):
     temp = []
 
     for item in gen:
+        count += 1
+        avgVotes += item.score
         temp.append((item.score,item.title))
     
     for item in temp:
@@ -124,6 +126,7 @@ def get_graph_data(item):
     
     for i in range(1, 14):
         print(len(temp[i]))
+
     print(c)
     cnt = 0
     for i in range(1, 14):
