@@ -12,7 +12,7 @@ reddit = praw.Reddit(
     client_secret=client_secret,
     user_agent="review finder"
 )
-api = PushshiftAPI(reddit)
+api = PushshiftAPI(max_results_per_request=100)
 
 def get_from_reddit(item):
 
@@ -20,7 +20,7 @@ def get_from_reddit(item):
     reddit_posts = reddit.subreddit("all").search(
         item, 
         sort="best", 
-        time_filter="month", 
+        time_filter="year", 
         limit = 10,
     )
 
@@ -42,7 +42,7 @@ def searchAPI(start_epoch, end_epoch, item):
                     sort_type = "score",
                     title=item,
                     over_18="false",
-                    limit=200
+                    limit=50
                     )
     print("bruh1")
     cur1 = 0
@@ -79,7 +79,8 @@ def get_graph_data(item):
                 sort = "desc",
                 sort_type = "score",
                 title=item,
-                over_18="false"
+                over_18="false",
+                limit=300
                 )
 
     cur1 = 0
@@ -91,10 +92,10 @@ def get_graph_data(item):
 
     results = [(0, 0) for i in range(15)]
     c = 0
-    lim = 1000
+    lim = 2000
 
     for item in gen:
-
+        #print(item.permalink)
         sent = TextBlob(item.title).sentiment.polarity
 
         ind = 0
@@ -113,6 +114,8 @@ def get_graph_data(item):
                     break
 
         temp[ind].append(sent)
+        if ind == 4:
+            print(item.permalink)
         c+=1
         if c > lim:
             break
@@ -120,6 +123,7 @@ def get_graph_data(item):
     
     for i in range(1, 14):
         print(len(temp[i]))
+    print(c)
     cnt = 0
     for i in range(1, 14):
         cur1 = 0
@@ -131,6 +135,7 @@ def get_graph_data(item):
             else:
                 cur2 += item
         results[i-1] = (cur1, cur2)
+    print(cnt)
         
     
     
